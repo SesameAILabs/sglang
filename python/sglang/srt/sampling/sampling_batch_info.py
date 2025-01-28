@@ -77,6 +77,14 @@ class SamplingBatchInfo:
             [r.sampling_params.min_p for r in reqs], dtype=torch.float
         ).to(device, non_blocking=True)
 
+        logit_bias = None
+        if any(r.sampling_params.logit_bias is not None for r in reqs):
+            logit_bias = torch.zeros(len(reqs), vocab_size, device=device)
+            for i, r in enumerate(reqs):
+                if r.sampling_params.logit_bias is not None:
+                    for key, value in r.sampling_params.logit_bias.items():
+                        logit_bias[i, int(key)] = value
+
         # Check if any request has custom logit processor
         has_custom_logit_processor = (
             batch.enable_custom_logit_processor  # check the flag first.
