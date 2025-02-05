@@ -940,9 +940,9 @@ class TokenizerManager:
 
     async def get_internal_state(self) -> List[Dict[Any, Any]]:
         req = GetInternalStateReq()
-        responses: List[GetInternalStateReqOutput] = (
-            await self.get_internal_state_communicator(req)
-        )
+        responses: List[
+            GetInternalStateReqOutput
+        ] = await self.get_internal_state_communicator(req)
         # Many DP ranks
         return [res.internal_state for res in responses]
 
@@ -994,7 +994,7 @@ class TokenizerManager:
     def create_abort_task(self, obj: GenerateReqInput):
         # Abort the request if the client is disconnected.
         async def abort_request():
-            await asyncio.sleep(2)
+            await asyncio.sleep(0.02)
             if obj.is_single:
                 self.abort_request(obj.rid)
             else:
