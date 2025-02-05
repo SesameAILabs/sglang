@@ -848,7 +848,7 @@ class TokenizerManager:
     def create_abort_task(self, obj: GenerateReqInput):
         # Abort the request if the client is disconnected.
         async def abort_request():
-            await asyncio.sleep(1)
+            await asyncio.sleep(0.02)
             if obj.is_single:
                 self.abort_request(obj.rid)
             else:
