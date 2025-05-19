@@ -321,10 +321,7 @@ class Conversation:
             ret = system_prompt
             for i, (role, message) in enumerate(self.messages):
                 if message:
-                    if i == 0:
-                        ret += message + self.sep
-                    else:
-                        ret += role + message + self.sep
+                    ret += role + message + self.sep
                 else:
                     ret += role
             return ret
