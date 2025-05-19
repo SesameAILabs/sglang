@@ -42,7 +42,7 @@ runtime_common = [
     "transformers==4.51.1",
     "uvicorn",
     "uvloop",
-    "xgrammar==0.1.19",
+    "xgrammar==0.1.18",
     "blobfile==3.0.0"
 ]
 
