@@ -55,6 +55,9 @@ class SamplingBatchInfo:
     # Device
     device: str = "cuda"
 
+    # Logit bias
+    logit_bias: Optional[torch.Tensor] = None
+
     @classmethod
     def from_schedule_batch(cls, batch: ScheduleBatch, vocab_size: int):
         reqs = batch.reqs
@@ -148,6 +151,7 @@ class SamplingBatchInfo:
             custom_params=custom_params,
             custom_logit_processor=merged_custom_logit_processor,
             device=device,
+            logit_bias=logit_bias,
         )
         return ret
 
@@ -193,6 +197,9 @@ class SamplingBatchInfo:
             self.linear_penalty = None
 
     def apply_logits_bias(self, logits: torch.Tensor):
+        if self.logit_bias is not None:
+            logits.add_(self.logit_bias)            
+
         if self.linear_penalty is not None:
             # Used in the overlap mode
             logits.add_(self.linear_penalty)
